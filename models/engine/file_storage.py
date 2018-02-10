@@ -4,6 +4,7 @@ Converts a dictionary of objects to and from JSON format
 in order to save past instances of a class.
 """
 import json
+import os.path
 
 
 class FileStorage:
@@ -41,6 +42,6 @@ class FileStorage:
         deserializes the JSON file to __objects
         (only if the JSON file exists; else, do nothing)
         """
-        if (FileStorage.__file_path):
+        if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, mode='r') as j_file:
                 FileStorage.__objects = json.load(j_file)

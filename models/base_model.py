@@ -16,6 +16,7 @@ class BaseModel:
         """
         Initializing class Instance
         """
+        self.id = str(uuid.uuid4())
         if (kwargs):
             for key, value in kwargs.items():
                 if key != '__class__':
@@ -26,7 +27,6 @@ class BaseModel:
                     self.updated_at, '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 storage.new(self)
-                self.id = str(uuid.uuid4())
                 self.created_at = datetime.now()
                 self.updated_at = datetime.now()
 
