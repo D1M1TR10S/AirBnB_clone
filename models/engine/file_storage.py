@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Converts a dictionary of objects to and from JSON format
+FileStorage class - Converts a dictionary of objects to and from JSON format
 in order to save past instances of a class.
 """
 import json
@@ -28,7 +28,7 @@ class FileStorage:
         sets in __objects the obj with key <obj class name>.id
         """
         FileStorage.__objects['{}.{}'.format(
-                              obj.__class__.__name__, obj.id)] = obj
+                              obj.__class__.__name__, obj.id)] = obj.to_dict()
 
     def save(self):
         """
