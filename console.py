@@ -19,7 +19,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """Creates new instance of BaseModel"""
         args = arg.split()
-        if self.check_args(args) == 0:
+        if self.check_args(args, 'create') == 0:
             new = classes[arg[0]]()
             new.save()
             print('{}'.format(new.id))
@@ -35,35 +35,36 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, arg):
         """Prints string representation"""
         args = arg.split()
-        if self.check_args(args) == 0:
+        if self.check_args(args, 'show') == 0:
             print(storage.all()[args[0] + '.' + args[1]])
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
         args = arg.split()
-        if self.check_args(args) == 0:
+        if self.check_args(args, 'destroy') == 0:
             del storage.all()[args[0] + '.' + args[1]]
             storage.save()
 
     def do_all(self, arg):
         """Prints string representations of all instances of a class"""
         args = arg.split()
-        if self.check_args(args) == 0:
-            obj_list = [str(value) for key, value in storage.all().items()
-                        if arg in key]
-            print('\n'.join([obj_str for obj_str in obj_list]))
+        if self.check_args(args, 'all') == 0:
+            print([str(value) for key, value in storage.all().items()
+                  if arg in key])
 
     def do_update(self, arg):
         """Updates an instance."""
         args = arg.split()
-        if self.check_args(args) == 0:
+        if self.check_args(args, 'update') == 0:
             key = '{}.{}'.format(args[0], args[1])
             setattr(storage.all()[key], args[2], args[3])
 
     @staticmethod
-    def check_args(args):
+    def check_args(args, cmd):
         """Checks for proper usage."""
         if len(args) == 0:
+            if cmd == 'all':
+                print([str(value) for value in storage.all().values()])
             print('** class name missing **')
         elif args[0] not in classes:
             print('** class doesn\'t exist **')
