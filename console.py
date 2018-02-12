@@ -72,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
                       'email': v, 'password': v, 'first_name': v,
                       'last_name': v, 'name': v, 'state_id': v, 'city_id':
                       v, 'user_id': v, 'description': v, 'place_id': v,
-                      'text': v}
+                      'text': v, 'amenity_ids': [v]}
             key = '{}.{}'.format(args[0], args[1])
             setattr(storage.all()[key], args[2], type_d[args[2]])
 
