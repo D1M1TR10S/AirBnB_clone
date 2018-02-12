@@ -16,17 +16,18 @@ class FileStorage:
 
     def all(self):
         """Returns dictionary of objects."""
-        return (FileStorage.__objects)
+        return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to __objects."""
         FileStorage.__objects['{}.{}'.format(
-                              obj.__class__.__name__, obj.id)] = obj
+            obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """Saves an instance in json format."""
+        d = {k: v.to_dict() for k, v in self.__objects.items()}
         with open(FileStorage.__file_path, mode='w') as f:
-            json.dump(FileStorage.__objects, f)
+            json.dump(d, f)
 
     def reload(self):
         """Deserializes json string."""
