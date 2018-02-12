@@ -10,4 +10,4 @@ class TestBaseModel(unittest.TestCase):
     def test_type(self):
         """Checks type of attributes."""
         my_model = BaseModel()
-        self.assertIs(my_model.id, str)
+        self.assertTrue(type(my_model.id) is str)
