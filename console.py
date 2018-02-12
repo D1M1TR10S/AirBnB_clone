@@ -20,7 +20,7 @@ class HBNBCommand(cmd.Cmd):
         """Creates new instance of BaseModel"""
         args = arg.split()
         if self.check_args(args, 'create') == 0:
-            new = classes[arg[0]]()
+            new = classes[args[0]]()
             new.save()
             print('{}'.format(new.id))
 
@@ -65,16 +65,20 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             if cmd == 'all':
                 print([str(value) for value in storage.all().values()])
-            print('** class name missing **')
+            else:
+                print('** class name missing **')
         elif args[0] not in classes:
             print('** class doesn\'t exist **')
         elif len(args) != 2:
-            print('** instance id missing **')
+            if cmd == 'all' or 'create':
+                return 0
+            else:
+                print('** instance id missing **')
         elif '{}.{}'.format(args[0], args[1]) not in storage.all():
             print('** no instance found **')
-        elif len(args) != 3:
+        elif len(args) != 3 and cmd == 'update':
             print('** attribute name missing **')
-        elif len(args) != 4:
+        elif len(args) != 4 and cmd == 'update':
             print('** value missing **')
         else:
             return 0
