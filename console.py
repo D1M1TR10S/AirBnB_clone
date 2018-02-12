@@ -18,7 +18,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """Creates new instance of BaseModel"""
-        if self.check_args(arg) == 0:
+        args = arg.split()
+        if self.check_args(args) == 0:
             new = classes[arg[0]]()
             new.save()
             print('{}'.format(new.id))
@@ -46,7 +47,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """Prints string representations of all instances of a class"""
-        if self.check_args(arg) == 0:
+        args = arg.split()
+        if self.check_args(args) == 0:
             obj_list = [str(value) for key, value in storage.all().items()
                         if arg in key]
             print('\n'.join([obj_str for obj_str in obj_list]))
@@ -55,6 +57,8 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance."""
         args = arg.split()
         if self.check_args(args) == 0:
+            key = '{}.{}'.format(args[0], args[1])
+            setattr(storage.all()[key], args[2], args[3])
 
     @staticmethod
     def check_args(args):
