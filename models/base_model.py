@@ -28,6 +28,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
+			models.storage.save(self)
 
     def __str__(self):
         """String representation of object."""
