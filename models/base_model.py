@@ -2,8 +2,7 @@
 """Module containing base model."""
 from datetime import datetime
 import uuid
-from models import storage
-
+import models
 
 class BaseModel:
     """Base model that other objects will inherit from.
@@ -28,7 +27,7 @@ class BaseModel:
         else:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """String representation of object."""
@@ -38,7 +37,7 @@ class BaseModel:
     def save(self):
         """Saves instance to dictionary, updates datetime."""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary representation of object."""

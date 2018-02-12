@@ -2,6 +2,7 @@
 """File storage module."""
 import json
 import os.path
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -33,4 +34,6 @@ class FileStorage:
         """Deserializes json string."""
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path) as f:
-                FileStorage.__objects = json.load(f)
+                d = json.load(f)
+            for k, v in d.items():
+                self.__objects[k] = eval(v['__class__'])(**v)
