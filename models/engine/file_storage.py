@@ -5,7 +5,8 @@ in order to save past instances of a class.
 """
 import json
 import os.path
-from models.base_model import BaseModel
+import models
+
 
 class FileStorage:
     """
@@ -21,32 +22,37 @@ class FileStorage:
         """
         Returns the dictionary __objects
         """
-        return (FileStorage.__objects)
+        return self.__objects
 
     def new(self, obj):
         """
         sets in __objects the obj with key <obj class name>.id
         """
-        FileStorage.__objects['{}.{}'.format(
+        self.__objects['{}.{}'.format(
                               obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """
         serializes __objects to the JSON file (path: __file_path)
+        Using dict comprehension to turn objects from self.__objects
+        into a dict
         """
         d = {k: v.to_dict() for k, v in self.__objects.items()}
-        with open(FileStorage.__file_path, mode='w') as f:
+        with open(self.__file_path, mode='w') as f:
             json.dump(d, f)
 
 
     def reload(self):
         """
-        deserializes the JSON file to __objects
+        deserializes the JSON file back into __objects
         (only if the JSON file exists; else, do nothing)
+        Sends objects to BaseModel as keyword arguments:
         eval(val['__class__'])(**val) is the same as BaseModel(**val)
         """
-        if os.path.exists(FileStorage.__file_path):
-            with open(FileStorage.__file_path, mode='r') as j_file:
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, mode='r') as j_file:
                 d = json.load(j_file)
             for key, val in d.items():
-                self.__objects[key] = eval(val['__class__'])(**val)
+                uni = val.get('__class__')
+                if uni in models.class_dict:
+                    self.__objects[key] = models.class_dict[uni](**val)
