@@ -79,6 +79,13 @@ class HBNBCommand(cmd.Cmd):
                 setattr(storage.all()[key], args[2], args[3])
             storage.save()
 
+    def default(self, arg):
+        """Default when command prefix not recognized."""
+        args = arg.split('.')
+        if args[1] == 'all()':
+            print([str(value) for key, value in storage.all().items()
+                  if args[0] in key])
+
     @staticmethod
     def check_args(args, cmd):
         """Checks for proper usage."""
