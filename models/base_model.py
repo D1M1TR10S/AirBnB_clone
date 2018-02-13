@@ -25,10 +25,6 @@ class BaseModel:
                 self.created_at, '%Y-%m-%dT%H:%M:%S.%f')
             self.updated_at = datetime.strptime(
                 self.updated_at, '%Y-%m-%dT%H:%M:%S.%f')
-<<<<<<< HEAD
-=======
-            
->>>>>>> 467f7e2bdacb2b2b26dd5afce310c0da71cec664
         else:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
@@ -41,24 +37,12 @@ class BaseModel:
                 (self.__class__.__name__, self.id, self.__dict__))
 
     def save(self):
-<<<<<<< HEAD
         """Saves instance to dictionary, updates datetime."""
-=======
-        """
-        Saves 'updated_at' with the current date and time
-        """
->>>>>>> 467f7e2bdacb2b2b26dd5afce310c0da71cec664
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-<<<<<<< HEAD
         """Returns a dictionary representation of object."""
-=======
-        """
-        Returns a dictionary with all keys/values of instance __dict__
-        """
->>>>>>> 467f7e2bdacb2b2b26dd5afce310c0da71cec664
         my_dict = self.__dict__.copy()
         my_dict['__class__'] = self.__class__.__name__
         my_dict['created_at'] = self.created_at.isoformat()
