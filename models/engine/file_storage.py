@@ -5,7 +5,7 @@ in order to save past instances of a class.
 """
 import json
 import os.path
-
+from models.base_model import BaseModel
 
 class FileStorage:
     """
@@ -28,20 +28,25 @@ class FileStorage:
         sets in __objects the obj with key <obj class name>.id
         """
         FileStorage.__objects['{}.{}'.format(
-                              obj.__class__.__name__, obj.id)] = obj.to_dict()
+                              obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """
         serializes __objects to the JSON file (path: __file_path)
         """
+        d = {k: v.to_dict() for k, v in self.__objects.items()}
         with open(FileStorage.__file_path, mode='w') as f:
-            json.dump(FileStorage.__objects, f)
+            json.dump(d, f)
+
 
     def reload(self):
         """
         deserializes the JSON file to __objects
         (only if the JSON file exists; else, do nothing)
+        eval(val['__class__'])(**val) is the same as BaseModel(**val)
         """
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, mode='r') as j_file:
-                FileStorage.__objects = json.load(j_file)
+                d = json.load(j_file)
+            for key, val in d.items():
+                self.__objects[key] = eval(val['__class__'])(**val)
