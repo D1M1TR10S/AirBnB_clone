@@ -4,6 +4,7 @@ from datetime import datetime
 import uuid
 import models
 
+
 class BaseModel:
     """Base model that other objects will inherit from.
 
