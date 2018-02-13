@@ -85,6 +85,12 @@ class HBNBCommand(cmd.Cmd):
         if args[1] == 'all()':
             print([str(value) for key, value in storage.all().items()
                   if args[0] in key])
+        elif args[1] == 'count()':
+            count = 0
+            for value in storage.all().values():
+                if value.__class__.__name__ == args[0]:
+                    count += 1
+            print(count)
 
     @staticmethod
     def check_args(args, cmd):
