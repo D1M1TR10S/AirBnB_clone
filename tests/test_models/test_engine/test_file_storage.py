@@ -7,7 +7,10 @@ from models.engine.file_storage import FileStorage
 class TestFileStorage(unittest.TestCase):
     """Tests file storage."""
 
-    def test_type(self):
-        """Check if attributes are correct type."""
-        self.assertTrue(FileStorage.__file_path is str)
-        self.assertTrue(FileStorage.__objects is dict)
+    def test_privacy(self):
+        """Check if attributes are private."""
+        a = FileStorage()
+        with self.assertRaises(AttributeError):
+            print(a.file_path)
+        with self.assertRaises(AttributeError):
+            print(a.objects)
