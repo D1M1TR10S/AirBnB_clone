@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
         args = shlex.split(arg)
         if self.check_args(args, 'all') == 0:
             print([str(value) for key, value in storage.all().items()
-                  if arg in key])
+                  if args[0] in key])
 
     def do_update(self, arg):
         """Updates an instance."""
