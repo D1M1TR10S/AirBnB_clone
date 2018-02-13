@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+<<<<<<< HEAD
 """Command interpreter module."""
 
 import cmd
@@ -102,6 +103,28 @@ class HBNBCommand(cmd.Cmd):
             print('** value missing **')
         else:
             return 0
+=======
+"""
+Command line interpreter for HBnB console
+"""
+import cmd
+
+
+class HBNBCommand(cmd.Cmd):
+    """HBNB Command class with custom prompt and shell methods
+    """
+    prompt = '(hbnb) '
+
+    def do_EOF(self, arg):
+        """Quit command to exit the program
+        """
+        return True
+
+    def do_quit(self, arg):
+        """Quit command to exit the program
+        """
+        return True
+>>>>>>> 467f7e2bdacb2b2b26dd5afce310c0da71cec664
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
