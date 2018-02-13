@@ -65,17 +65,19 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance."""
         args = shlex.split(arg)
         if self.check_args(args, 'update') == 0:
-            v = args[3]
-            type_d = {'number_rooms': int(v), 'number_bathrooms': int(v),
-                      'max_guest': int(v), 'price_by_night': int(v),
-                      'latitude': float(v), 'longitude': float(v),
-                      'email': v, 'password': v, 'first_name': v,
-                      'last_name': v, 'name': v, 'state_id': v, 'city_id':
-                      v, 'user_id': v, 'description': v, 'place_id': v,
-                      'text': v, 'amenity_ids': [v]}
+            to_int = ['number_rooms', 'number_bathrooms',
+                      'max_guest', 'price_by_night']
+            to_float = ['latitude', 'longitude']
             key = '{}.{}'.format(args[0], args[1])
-            setattr(storage.all()[key], args[2], type_d[args[2]])
-			storage.save()
+            if args[2] in to_int:
+                setattr(storage.all()[key], args[2], int(args[3]))
+            elif args[2] in to_float:
+                setattr(storage.all()[key], args[2], float(args[3]))
+            elif args[2] == 'amenity_ids':
+                setattr(storage.all()[key], args[2], [args[3]])
+            else:
+                setattr(storage.all()[key], args[2], args[3])
+            storage.save()
 
     @staticmethod
     def check_args(args, cmd):
