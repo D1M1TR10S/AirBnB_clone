@@ -2,7 +2,7 @@
 """Command interpreter module."""
 
 import cmd
-from shlex import shlex
+import shlex
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -26,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """Creates new instance of BaseModel"""
+        """Creates new instance"""
         args = shlex.split(arg)
         if self.check_args(args, 'create') == 0:
             new = classes[args[0]]()
@@ -75,6 +75,7 @@ class HBNBCommand(cmd.Cmd):
                       'text': v, 'amenity_ids': [v]}
             key = '{}.{}'.format(args[0], args[1])
             setattr(storage.all()[key], args[2], type_d[args[2]])
+			storage.save()
 
     @staticmethod
     def check_args(args, cmd):
