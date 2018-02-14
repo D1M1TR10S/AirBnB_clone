@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
                     if value.__class__.__name__ == l[0]:
                         count += 1
                 print(count)
-            return
+                return
         args = ' '.join(l)
         try:
             eval('self.do_' + cmd + '(args)')
