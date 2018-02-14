@@ -79,19 +79,20 @@ class HBNBCommand(cmd.Cmd):
                 setattr(storage.all()[key], args[2], args[3])
             storage.save()
 
+    def do_count(self, arg):
+        """Counts how many instances by class."""
+        count = 0
+        for value in storage.all().values():
+            if value.__class__.__name__ == arg:
+                count += 1
+        print(count)
+
     def default(self, arg):
         """Default when command prefix not recognized."""
         l = (arg.replace('.', ' ').replace('(', ' ')
              .replace(')', ' ').replace(',', '').split())
         if len(l) > 1:
             cmd = l.pop(1)
-            if cmd == 'count':
-                count = 0
-                for value in storage.all().values():
-                    if value.__class__.__name__ == l[0]:
-                        count += 1
-                print(count)
-                return
         args = ' '.join(l)
         try:
             eval('self.do_' + cmd + '(args)')
