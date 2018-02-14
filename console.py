@@ -91,6 +91,10 @@ class HBNBCommand(cmd.Cmd):
                 if value.__class__.__name__ == args[0]:
                     count += 1
             print(count)
+        elif args[1].startswith('show'):
+            args[1] = args[1].strip('()"show"')
+            if self.check_args(args, 'show') == 0:
+                print(storage.all()[args[0] + '.' + args[1]])
 
     @staticmethod
     def check_args(args, cmd):
