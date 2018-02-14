@@ -65,16 +65,13 @@ class HBNBCommand(cmd.Cmd):
         """Updates an instance."""
         args = shlex.split(arg)
         if self.check_args(args, 'update') == 0:
-            to_int = {'number_rooms', 'number_bathrooms',
-                      'max_guest', 'price_by_night'}
-            to_float = {'latitude', 'longitude'}
+            type_d = {'number_rooms': 'int', 'number_bathrooms': 'int',
+                      'max_guest': 'int', 'price_by_night': 'int',
+                      'latitude': 'int', 'longitude': 'int'}
             key = '{}.{}'.format(args[0], args[1])
-            if args[2] in to_int:
-                setattr(storage.all()[key], args[2], int(args[3]))
-            elif args[2] in to_float:
-                setattr(storage.all()[key], args[2], float(args[3]))
-            elif args[2] == 'amenity_ids':
-                setattr(storage.all()[key], args[2], [args[3]])
+            if args[2] in type_d:
+                value = eval(type_d[args[2]])(args[3])
+                setattr(storage.all()[key], args[2], value)
             else:
                 setattr(storage.all()[key], args[2], args[3])
             storage.save()
