@@ -81,20 +81,27 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, arg):
         """Default when command prefix not recognized."""
-        args = arg.split('.')
-        if args[1] == 'all()':
-            print([str(value) for key, value in storage.all().items()
-                  if args[0] in key])
-        elif args[1] == 'count()':
+        l = (arg.replace('.', ' ').replace('(', ' ')
+             .replace(')', ' ').replace(',', '').split())
+        if len(l) == 1:
+            print('Invalid argument.')
+            return
+        if l[1] == 'all' and len(l) == 3:
+            self.do_all(l[0] + ' ' + l[2])
+        elif l[1] == 'count' and len(l) == 2:
             count = 0
             for value in storage.all().values():
-                if value.__class__.__name__ == args[0]:
+                if value.__class__.__name__ == l[0]:
                     count += 1
             print(count)
-        elif args[1].startswith('show'):
-            args[1] = args[1].strip('()"show"')
-            if self.check_args(args, 'show') == 0:
-                print(storage.all()[args[0] + '.' + args[1]])
+        elif l[1] == 'show' and len(l) == 3:
+            self.do_show(l[0] + ' ' + l[2])
+        elif l[1] == 'destroy' and len(l) == 3:
+            self.do_destroy(l[0] + ' ' + l[2])
+        elif l[1] == 'update' and len(l) == 5:
+            self.do_update(l[0] + ' ' + l[2] + ' ' + l[3] + ' ' + l[4])
+        else:
+            print('Invalid argument.')
 
     @staticmethod
     def check_args(args, cmd):
