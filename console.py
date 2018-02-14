@@ -4,7 +4,9 @@ Command line interpreter for HBnB console
 """
 import cmd
 import models
-
+import json
+import shlex
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """HBNB Command class with custom prompt and shell methods
@@ -17,12 +19,14 @@ class HBNBCommand(cmd.Cmd):
         Prints errors if the class name is missing
         or class does not exist.
         """
-
-        if present('class name', arg):
-            if exists(arg):
-                new = models.class_dict[arg]()
+        args = shlex.split(arg)
+        if len(args) == 1:
+            if exists(args[0]):
+                new = models.class_dict[args[0]]()
                 new.save()
-                print(new.__class__.__name__, new.id)
+                print(new.id)
+        else:
+            print("** class name missing **")
 
     def do_show(self, arg):
         """
@@ -30,17 +34,96 @@ class HBNBCommand(cmd.Cmd):
         a class based on class name and id
         """
         args = arg.split()
-        # Fix error check to account for missing arguments
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if present('class name', args[0]):
+        if len(args) > 0:
             if exists(args[0]):
-                if present('instance id', args[1]):
+                if len(args) == 2:
                     class_id = "{}.{}".format(args[0], args[1])
                     temp_d = models.storage.all()
                     if class_id in temp_d:
                         print(temp_d[class_id])
                     else:
                         print("** no instance found **")
+                else:
+                    print("** instance id missing **")
+        else:
+            print("** class name missing **")
+
+    def do_destroy(self, arg):
+        """
+        Deletes a dictionary of an instance of
+        a class from the json file based on
+        class name and id
+        """
+        args = arg.split()
+        deleted = 0
+        if len(args) > 0:
+            if exists(args[0]):
+                if len(args) == 2:
+                    obj_id = "{}.{}".format(args[0], args[1])
+                    obj = models.storage.all()
+                    for key, value in obj.items():
+                        if key == obj_id:
+                            obj.pop(key)
+                            deleted = 1
+                            break
+                    if deleted == 0:
+                        print("** no instance found **")
+                else:
+                    print("** instance id missing **")
+        else:
+            print("** class name missing **")
+        models.storage.save()
+    
+    def do_all(self, arg):
+        """
+        Prints string representations of all instances
+        based or not on the class name
+        """
+        arg = arg.split()
+        class_list = []
+        all_objs = models.storage.all()
+        if len(arg) == 1:
+            """class name is given as an argument
+            """
+            if exists(args[0]):
+                for key, value in all_objs.items():
+                    if arg[0] == key:
+                        class_list.append(value)
+        elif len(arg) == 0:
+            """class name is not given
+            """
+            for key, value in all_objs.items():
+                class_list.append(value)
+        print(class_list)
+
+    def do_update(self, arg):
+        """
+        Updates an attribute in the
+        class and saves to json file
+        """
+        updated = 0
+        args = arg.split()
+        if len(args) > 0:
+            if exists(args[0]):
+                if len(args) > 1:
+                    if len(args) > 2:
+                        if len(args) > 3:
+                            obj_id = "{}.{}".format(args[0], args[1])
+                            obj = models.storage.all()
+                            if obj_id in obj:
+                                instance = obj[obj_id]
+                                setattr(instance, args[2], args[3])
+                                models.storage.save()
+                            else:
+                                print("** no instance found **")
+                        else:
+                            print("** value missing **")
+                    else:
+                        print("** attribute name missing **")
+                else:
+                    print("** instance id missing **")
+        else:
+            print("** class name missing **")
 
     def do_EOF(self, arg):
         """Quit command to exit the program
@@ -57,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
+
 def exists(arg):
     """Checks to see if an instance exists
     """
@@ -64,15 +148,6 @@ def exists(arg):
         return True
     else:
         print("** class doesn't exist **")
-        return False
-
-def present(name, arg):
-    """Checks to see if an argument is present
-    """
-    if arg is not "":
-        return True
-    else:
-        print("** {} missing **".format(name))
         return False
 
 if __name__ == '__main__':

@@ -29,7 +29,7 @@ class FileStorage:
         sets in __objects the obj with key <obj class name>.id
         """
         self.__objects['{}.{}'.format(
-                              obj.__class__.__name__, obj.id)] = obj
+                       obj.__class__.__name__, obj.id)] = obj
 
     def save(self):
         """
@@ -47,7 +47,7 @@ class FileStorage:
         deserializes the JSON file back into __objects
         (only if the JSON file exists; else, do nothing)
         Sends objects to BaseModel as keyword arguments:
-        eval(val['__class__'])(**val) is the same as BaseModel(**val)
+        models.class_dict[uni](**val) same as BaseModel(**val)
         """
         if os.path.exists(self.__file_path):
             with open(self.__file_path, mode='r') as j_file:

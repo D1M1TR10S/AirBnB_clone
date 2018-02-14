@@ -4,6 +4,7 @@ Base Model class for all the common attributes and methods
 """
 from datetime import datetime
 import uuid
+import models
 
 
 class BaseModel:
@@ -11,6 +12,9 @@ class BaseModel:
     Base class for AirBnB console
     Uses cmd module
     """
+    id = ""
+    created_at = None
+    updated_at = None
 
     def __init__(self, *args, **kwargs):
         """
@@ -23,7 +27,6 @@ class BaseModel:
         send objects of class to storage.new, and save the dict
         to a json file.
         """
-        self.id = str(uuid.uuid4())
         if kwargs:
             for key, value in kwargs.items():
                 if key != '__class__':
@@ -34,6 +37,7 @@ class BaseModel:
                 self.updated_at, '%Y-%m-%dT%H:%M:%S.%f')
             
         else:
+            self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
@@ -41,7 +45,14 @@ class BaseModel:
 
     def __str__(self):
         """
-        Printing Class information to stdout
+        Returning string representation of an object for printing
+        """
+        return ("[{}] ({}) {}".format
+                (self.__class__.__name__, self.id, self.__dict__))
+
+    def __repr__(self):
+        """
+        Returning string representation of an object
         """
         return ("[{}] ({}) {}".format
                 (self.__class__.__name__, self.id, self.__dict__))
