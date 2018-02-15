@@ -67,7 +67,7 @@ class HBNBCommand(cmd.Cmd):
         if self.check_args(args, 'update') == 0:
             type_d = {'number_rooms': 'int', 'number_bathrooms': 'int',
                       'max_guest': 'int', 'price_by_night': 'int',
-                      'latitude': 'int', 'longitude': 'int'}
+                      'latitude': 'float', 'longitude': 'float'}
             key = '{}.{}'.format(args[0], args[1])
             if args[2] in type_d:
                 value = eval(type_d[args[2]])(args[3])
