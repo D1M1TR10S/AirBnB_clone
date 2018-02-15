@@ -8,6 +8,7 @@ import json
 import shlex
 from models.base_model import BaseModel
 
+
 class HBNBCommand(cmd.Cmd):
     """HBNB Command class with custom prompt and shell methods
     """
@@ -101,7 +102,6 @@ class HBNBCommand(cmd.Cmd):
         Updates an attribute in the
         class and saves to json file
         """
-        updated = 0
         args = arg.split()
         if len(args) > 0:
             if exists(args[0]):

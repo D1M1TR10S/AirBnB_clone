@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """User class for storing information about the user
 """
+from models.base_model import BaseModel
 
 
 class User(BaseModel):

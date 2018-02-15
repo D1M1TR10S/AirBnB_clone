@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Review class for storing the user's reviews
 """
+from models.base_model import BaseModel
 
 
 class Review(BaseModel):

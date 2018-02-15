@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Place class for storing information about place
 """
+from models.base_model import BaseModel
 
 
 class Place(BaseModel):
