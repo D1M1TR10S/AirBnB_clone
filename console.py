@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in classes:
             print('** class doesn\'t exist **')
         elif len(args) < 2:
-            if cmd == 'all' or 'create':
+            if cmd == 'all' or cmd == 'create':
                 return 0
             else:
                 print('** instance id missing **')
