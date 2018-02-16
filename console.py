@@ -3,6 +3,7 @@
 
 import cmd
 import shlex
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -86,11 +87,19 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, arg):
         """Default when command prefix not recognized."""
-        l = (arg.replace('.', ' ').replace('(', ' ')
-             .replace(')', ' ').replace(',', '').split())
+        s = (arg.replace('.', ' ').replace('(', ' ').replace(')', ' '))
+        l = s.split()
         if len(l) > 1:
             cmd = l.pop(1)
-        args = ' '.join(l)
+        if '{' in s and cmd == 'update':
+            s = s.replace('update', '')
+            d = re.split(r"\s(?![^{]*})", s)
+            for k, v in eval(d[3]).items():
+                print(l[0]), print(l[1]), print(k), print(v)
+                args = l[0] + ' ' + l[1][:-1] + ' ' + k + ' ' + str(v)
+                self.do_update(args)
+            return
+        args = ' '.join(l).replace(',', '')
         try:
             eval('self.do_' + cmd + '(args)')
         except:
