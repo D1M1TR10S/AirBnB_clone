@@ -1,23 +1,43 @@
 #!/usr/bin/python3
-"""Module to test place class."""
-import unittest
+"""Test file for Place class"""
+from unittest import TestCase
+from datetime import datetime
 from models.place import Place
+from models.base_model import BaseModel
 
 
-class TestPlace(unittest.TestCase):
-    """Tests Place class."""
+class TestPlace(TestCase):
+    """TestPlace class that checks the Place class for errors"""
 
-    def test_type(self):
-        """Makes sure attribute types are as expected."""
-        my_model = Place()
-        self.assertTrue(type(my_model.name) is str)
-        self.assertTrue(type(my_model.city_id) is str)
-        self.assertTrue(type(my_model.user_id) is str)
-        self.assertTrue(type(my_model.description) is str)
-        self.assertTrue(type(my_model.number_rooms) is int)
-        self.assertTrue(type(my_model.number_bathrooms) is int)
-        self.assertTrue(type(my_model.max_guest) is int)
-        self.assertTrue(type(my_model.price_by_night) is int)
-        self.assertTrue(type(my_model.latitude) is float)
-        self.assertTrue(type(my_model.longitude) is float)
-        self.assertTrue(type(my_model.amenity_ids) is list)
+    def setUp(self):
+        """Creates the instance of Place"""
+        self.place = Place()
+
+    def tearDown(self):
+        """Deletes the instance of Place"""
+        del self.place
+
+    def test_instance(self):
+        """Checks if an instance exists"""
+        self.assertIsInstance(self.place, Place)
+
+    def test_attributes(self):
+        """Checks if public class attributes exists and are correct format"""
+        self.assertEqual(type(self.place.city_id), str)
+        self.assertEqual(type(self.place.user_id), str)
+        self.assertEqual(type(self.place.name), str)
+        self.assertEqual(type(self.place.description), str)
+        self.assertEqual(type(self.place.number_rooms), int)
+        self.assertEqual(type(self.place.number_bathrooms), int)
+        self.assertEqual(type(self.place.max_guest), int)
+        self.assertEqual(type(self.place.price_by_night), int)
+        self.assertEqual(type(self.place.latitude), float)
+        self.assertEqual(type(self.place.longitude), float)
+        self.assertEqual(type(self.place.amenity_ids), list)
+
+    def test_inheritance(self):
+        """Checks if instance correctly inherits from BaseModel"""
+        self.assertIsInstance(self.place, BaseModel)
+        self.assertTrue(hasattr(self.place, 'id'))
+        self.assertTrue(hasattr(self.place, 'created_at'))
+        self.assertTrue(hasattr(self.place, 'updated_at'))
